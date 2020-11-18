@@ -1,8 +1,8 @@
 
-from ..layers.maxpool import LPMaxPool2d
-from ..layers.linear import LPLinear, Flatten
-from ..layers.convolution import LPConv1d, LPConv2D
-from ..layers.activation import LPReLU
+from lpdn.layers.maxpool import LPMaxPool2d
+from lpdn.layers.linear import LPLinear, Flatten
+from lpdn.layers.convolution import LPConv1d, LPConv2D
+from lpdn.layers.activation import LPReLU
 
 import torch
 import torch.nn as nn 
@@ -11,6 +11,7 @@ import pdb
 class CNN(nn.Module):
     """
     """
+    
     def __init__(self,
                 out_dim,
                 **kwargs):

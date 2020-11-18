@@ -8,25 +8,24 @@ def square(x: torch.Tensor) -> torch.Tensor:
 
 
 class LPLinear(torch.nn.Linear):
-"""
-"""
+    """
+    """
+    def __init__(self, 
+                in_features, 
+                out_features, 
+                bias=True):
+        super(LPLinear, self).__init__(
+            in_features=in_features, 
+            out_features=out_features, 
+            bias=bias
+        )
 
-def __init__(self, 
-             in_features, 
-             out_features, 
-             bias=True):
-    super(LPLinear, self).__init__(
-        in_features=in_features, 
-        out_features=out_features, 
-        bias=bias
-    )
+    def forward(self, inputs: Tuple[Tensor, Tensor]) -> Tuple[Tensor, Tensor]:
+        input_mean, input_var = inputs
+        m = F.linear(input_mean, self.weight, self.bias)
+        v = F.linear(input_var, square(self.weight))
 
-def forward(self, inputs: Tuple[Tensor, Tensor]) -> Tuple[Tensor, Tensor]:
-    input_mean, input_var = inputs
-    m = F.linear(input_mean, self.weight, self.bias)
-    v = F.linear(input_var, square(self.weight))
-
-    return m, v
+        return m, v
 
 
 class Flatten(torch.nn.Module):
