@@ -14,7 +14,7 @@ def square(x: torch.Tensor) -> torch.Tensor:
 class LPConv1d(Conv1d):
     """
     """
-    
+
     def __init__(self, 
                  in_channels,
                  out_channels,
@@ -56,12 +56,12 @@ class LPConv1d(Conv1d):
         return m, v
 
 
-class LPConv2D(Conv2d):
+class LPConv2d(Conv2d):
     """
     """
 
     def __init__(self, in_channels, out_channels, kernel_size, **kwargs):
-        super(LPConv2D, self).__init__(
+        super(LPConv2d, self).__init__(
             in_channels=in_channels,
             out_channels=out_channels,
             kernel_size=kernel_size,

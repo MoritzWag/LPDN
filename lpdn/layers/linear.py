@@ -8,8 +8,7 @@ def square(x: torch.Tensor) -> torch.Tensor:
 
 
 class LPLinear(torch.nn.Linear):
-    """
-    """
+    
     def __init__(self, 
                 in_features, 
                 out_features, 
