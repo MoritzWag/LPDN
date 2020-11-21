@@ -1,4 +1,4 @@
-from .utils.conversion import convert_to_lpdn
+from .utils.conversion import convert_to_lpdn, convert_layer
 from .layers.activation import LPReLU
 from .layers.maxpool import LPMaxPool2d
 from .layers.linear import LPLinear, Flatten
