@@ -60,3 +60,35 @@ def convert_to_lpdn(model, input_shape=None):
             return inputs
 
     return LPDN(model=model)
+
+
+def convert_layer(layer):
+    """
+    """
+    if isinstance(layer, nn.Conv2d):
+        layer_lp = LPConv2d(in_channels=layer.in_channels,
+                        out_channels=layer.out_channels,
+                        kernel_size=layer.out_channels,
+                        stride=layer.stride,
+                        dilation=layer.dilation,
+                        groups=layer.groups,
+                        bias=layer.bias != None)
+    elif isinstance(layer, nn.Linear):
+        layer_lp = LPLinear(in_features=layer.in_features,
+                    out_features=layer.out_features,
+                    bias=layer.bias != None)
+    elif isinstance(layer, nn.MaxPool2d):
+        layer_lp = LPMaxPool2d(kernel_size=layer.kernel_size,
+                        stride=layer.stride,
+                        padding=layer.padding,
+                        dilation=layer.dilation)
+    elif isinstance(layer, nn.ReLU):
+        layer_lp = LPReLU()
+    elif isinstance(layer, nn.BatchNorm2d):
+        pass
+    elif isinstance(layer, nn.Flatten):
+        layer_lp = Flatten()
+    else:
+        raise RuntimeError(f'Layer: {layer} -- is not implemented')
+
+    return layer_lp
