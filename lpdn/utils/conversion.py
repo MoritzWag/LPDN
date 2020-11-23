@@ -20,8 +20,9 @@ def convert_to_lpdn(model, input_shape=None):
         """
         """
         def __init__(self, model):
-            super(LPDN).__init__()
             self.modules_list = nn.ModuleList()
+            super(LPDN).__init__(model=model)
+            
             for layer in model.children():
                 if isinstance(layer, nn.Conv2d):
                     l = LPConv2d(in_channels=layer.in_channels,
