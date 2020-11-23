@@ -30,8 +30,17 @@ class LPLinear(torch.nn.Linear):
 class Flatten(torch.nn.Module):
     """One layer module that flattens its input, except for batch dimension."""
 
-    def forward(self, x: Tensor) -> Tensor:
-        if x.dim() == 1:
-            return x
+    def forward(self, x: Tuple[Tensor, Tensor]) -> Tuple[Tensor, Tensor]:
+
+        input_mean, input_var = x 
+        if input_mean.dim() == 1:
+            mean_flattened = input_mean
         else:
-            return x.view(x.size(0), -1)
+            mean_flattened = input_mean.view(input_mean.size(0), -1)
+
+        if input_var.dim() == 1:
+            var_flattened = input_var
+        else:
+            var_flattened = input_var.view(input_var.size(0), -1)
+        
+        return mean_flattened, var_flattened
