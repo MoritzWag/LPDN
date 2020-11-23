@@ -26,7 +26,7 @@ def convert_to_lpdn(model, input_shape=None):
                 if isinstance(layer, nn.Conv2d):
                     l = LPConv2d(in_channels=layer.in_channels,
                                     out_channels=layer.out_channels,
-                                    kernel_size=layer.out_channels,
+                                    kernel_size=layer.kernel_size,
                                     stride=layer.stride,
                                     dilation=layer.dilation,
                                     groups=layer.groups,
