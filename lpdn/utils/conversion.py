@@ -20,7 +20,7 @@ def convert_to_lpdn(model, input_shape=None):
         """
         """
         def __init__(self, model):
-            super().__init__()
+            super(LPDN).__init__()
             self.modules_list = nn.ModuleList()
             for layer in model.children():
                 if isinstance(layer, nn.Conv2d):
