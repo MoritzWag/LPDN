@@ -21,9 +21,20 @@ def convert_to_lpdn(model, input_shape=None):
         """
         def __init__(self, model, **kwargs):
             super(LPDN, self).__init__(**kwargs)
-            self.modules_list = nn.ModuleList()
+            self.lp_modules_list = nn.ModuleList()
+            self.modules_list = []
+            
+            def remove_sequential(model):
+                for layer in model.children():
+                    if type(layer) == nn.Sequential:
+                        remove_sequential(layer)
+                    if list(layer.children()) == []:
+                        self.modules_list.append(layer)
+             
+            remove_sequential(model)
+            
 
-            for layer in model.children():
+            for layer in self.modules_list:
                 if isinstance(layer, nn.Conv2d):
                     l = LPConv2d(in_channels=layer.in_channels,
                                     out_channels=layer.out_channels,
@@ -32,31 +43,31 @@ def convert_to_lpdn(model, input_shape=None):
                                     dilation=layer.dilation,
                                     groups=layer.groups,
                                     bias=layer.bias != None)
-                    self.modules_list.append(l)
+                    self.lp_modules_list.append(l)
                 elif isinstance(layer, nn.Linear):
                     l = LPLinear(in_features=layer.in_features,
                                 out_features=layer.out_features,
                                 bias=layer.bias != None)
-                    self.modules_list.append(l)
+                    self.lp_modules_list.append(l)
                 elif isinstance(layer, nn.MaxPool2d):
                     l = LPMaxPool2d(kernel_size=layer.kernel_size,
                                     stride=layer.stride,
                                     padding=layer.padding,
                                     dilation=layer.dilation)
-                    self.modules_list.append(l)
+                    self.lp_modules_list.append(l)
                 elif isinstance(layer, nn.ReLU):
                     l = LPReLU()
-                    self.modules_list.append(l)
+                    self.lp_modules_list.append(l)
                 elif isinstance(layer, nn.BatchNorm2d):
                     pass
                 elif isinstance(layer, nn.Flatten):
                     l = Flatten()
-                    self.modules_list.append(l)
+                    self.lp_modules_list.append(l)
                 else:
                     raise RuntimeError(f'Layer: {layer} -- is not implemented')
                 
         def forward(self, inputs):
-            for layer in self.modules_list:
+            for layer in self.lp_modules_list:
                 inputs = layer(inputs)
             return inputs
 
