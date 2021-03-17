@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="lpdn",
-    version="0.0.1",
+    version="0.0.2",
     author="Moritz Wagner",
     author_email="moritzwagner95@hotmail.de",
     description="Implementation of Lightweight Probabilistic Deep Network (inference-only) PyTorch",
